@@ -33,8 +33,16 @@ cd Handheld_lfd
 ```
 
 ### Run
-Follow instructions given in terminal by running:
+For data acquisition run and follow instructions given in terminal by running:
 ````bash
 sudo python3 Master.py
 ````
+For data analyse run:
+````bash
+cd Data_processing
+python3 Data_processor.py
+````
+To change/add sensors edit the subscriber (everything will be bagged what the subscriber receives):
+Data_collector\src\data_collector\data_collector
+
 
