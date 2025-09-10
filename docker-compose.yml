@@ -1,0 +1,79 @@
+ services:
+  External_camera_container:
+    image: zed_ros2_desktop_u22.04_sdk_4.2.5_cuda_12.6.3:latest
+    container_name: cam_ext
+    runtime: nvidia
+    privileged: true
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    environment:
+      - ROS_DOMAIN_ID=0
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY}
+      - NUM_CAMERAS=2
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
+      - /dev/shm:/dev/shm
+      - ./:/simple_ws2
+      - ./ZedCamera/Zed_ext/Config_files/:/root/ros2_ws/src/zed_wrapper/config
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && cd ~/ros2_ws && source install/setup.bash && ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zed2 namespace:=cam_ext  serial_number:=27432249"]
+
+  Internal_camera_container:
+    image: zed_ros2_desktop_u22.04_sdk_4.2.5_cuda_12.6.3:latest
+    container_name: cam_int
+    runtime: nvidia
+    privileged: true
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    environment:
+      - ROS_DOMAIN_ID=0
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY}
+      - NUM_CAMERAS=2
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
+      - /dev/shm:/dev/shm
+      - ./:/simple_ws2
+      - ./ZedCamera/Zed_int/Config_files/:/root/ros2_ws/src/zed_wrapper/config
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && cd ~/ros2_ws && source install/setup.bash && sleep 5 && ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zedm namespace:=cam_int  serial_number:=17640832"]
+    
+  ethercat_senseone_container:
+    build:
+      context: ./Force_sensor
+      dockerfile: Dockerfile
+    container_name: force_sensor
+    privileged: true
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    environment:
+      - ROS_DOMAIN_ID=0
+      - DISPLAY=${DISPLAY}
+
+    stdin_open: true
+    tty: true
+    command: bash -c "source /opt/ros/humble/setup.bash && cd /root/ros2_ws && source install/setup.bash && ros2 run senseone_eth_node senseone_eth_node enp60s0"
+
+
+  data_collector:
+    build:
+      context: ./Data_collector
+      dockerfile: Dockerfile
+    container_name: data_collector
+    volumes:
+      - ./Data_collector/src:/root/ros2_ws/src 
+    command: >
+      bash -c "
+      source /opt/ros/humble/setup.bash &&
+      source /ros2_ws/install/setup.bash &&
+      ros2 run data_collector data_collector"
+    tty: true
+    stdin_open: true

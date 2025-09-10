@@ -1,0 +1,16 @@
+services:
+  data_collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Data_collector
+    volumes:
+      - ./src:/root/ros2_ws/src 
+      - ../Bagfiles:/root/Bagfiles
+    command: >
+      bash -c "
+      source /opt/ros/humble/setup.bash &&
+      source /ros2_ws/install/setup.bash &&
+      ros2 run data_collector data_collector"
+    tty: true
+    stdin_open: true

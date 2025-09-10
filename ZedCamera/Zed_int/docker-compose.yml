@@ -1,0 +1,23 @@
+services:
+
+ External_camera_container:
+    image: zed_ros2_desktop_u22.04_sdk_4.2.5_cuda_12.6.3:latest
+    container_name: cam_int
+    runtime: nvidia
+    privileged: true
+    network_mode: "host"
+    ipc: "host"
+    pid: "host"
+    environment:
+      - ROS_DOMAIN_ID=0
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev:/dev
+      - /dev/shm:/dev/shm
+      - ./:/simple_ws2
+      - ./Config_files/:/root/ros2_ws/src/zed_wrapper/config/
+    stdin_open: true
+    tty: true
+    command: ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && cd ~/ros2_ws && source install/setup.bash && ros2 launch zed_wrapper zed_camera.launch.py camera_model:=zedm namespace:=cam_int  serial_number:=12041574"]
