@@ -22,6 +22,8 @@ It provides a flexible setup to add additional sensors and stream their data int
 ### Prerequisites
 - [Docker](https://docs.docker.com/get-docker/) installed
 - [ROS2](https://docs.ros.org/en/foxy/Installation.html) knowledge recommended
+- Printed model (see Solidworks folder)
+- Attach Aruco Markers (0-4) from https://chev.me/arucogen/ (4x4, 50-100-250-1000)
 
 ### Installation
 Clone the repository:
