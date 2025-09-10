@@ -1,5 +1,4 @@
-# 🖐️ A Modular Handheld Proxy Device for Learning from Demonstration in
-Robotics
+# 🖐️ A Modular Handheld Proxy Device for Learning from Demonstration in Robotics
 
 <img width="920" height="199" alt="image" src="https://github.com/user-attachments/assets/8075ab14-466f-439d-97f5-15bcd033ad6c" />
 
@@ -29,3 +28,11 @@ Clone the repository:
 ```bash
 git clone https://github.com/JelmerHofstra/Handheld_lfd.git
 cd Handheld_lfd
+```
+
+### Run
+Follow instructions given in terminal by running:
+````bash
+sudo python3 Master.py
+````
+
